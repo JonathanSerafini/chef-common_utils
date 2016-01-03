@@ -1,0 +1,7 @@
+name 'common_utils'
+maintainer 'Jonathan Serafini'
+maintainer_email 'jonathan@serafini.ca'
+license 'apachev2'
+description 'Installs/Configures common_utils'
+long_description 'Installs/Configures common_utils'
+version '0.1.0'
