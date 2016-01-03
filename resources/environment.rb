@@ -23,7 +23,7 @@ property :environment,
 
 # The level of precendence to apply attributes at
 property :precedence,
-  kind_of: String,,
+  kind_of: String,
   equal_to: ["environment","role"],
   default: "environment"
 

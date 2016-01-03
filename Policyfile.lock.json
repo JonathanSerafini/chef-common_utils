@@ -1,0 +1,48 @@
+{
+  "revision_id": "ca4262e7e21e93cee69d01a17ad92f4d60568a461afee2e8ca34e3d8b3e49146",
+  "name": "common_utils",
+  "run_list": [
+    "recipe[common_utils::default]"
+  ],
+  "cookbook_locks": {
+    "common_utils": {
+      "version": "0.1.0",
+      "identifier": "f9036d795f1a4f26aecfb7b5d33b86e49d12ae22",
+      "dotted_decimal_identifier": "70091037923547727.10888256278614843.148316445912610",
+      "source": ".",
+      "cache_key": null,
+      "scm_info": {
+        "scm": "git",
+        "remote": null,
+        "revision": "ab59bdc77ee725c7ef420dfc5527d22b51c3eeb6",
+        "working_tree_clean": false,
+        "published": false,
+        "synchronized_remote_branches": [
+
+        ]
+      },
+      "source_options": {
+        "path": "."
+      }
+    }
+  },
+  "default_attributes": {
+
+  },
+  "override_attributes": {
+
+  },
+  "solution_dependencies": {
+    "Policyfile": [
+      [
+        "common_utils",
+        ">= 0.0.0"
+      ]
+    ],
+    "dependencies": {
+      "common_utils (0.1.0)": [
+
+      ]
+    }
+  }
+}
