@@ -19,7 +19,7 @@
 
 resource_name :common_namespace
 
-# The environment name to lookup and apply
+# The namespace name to lookup and apply
 property :namespace,
   kind_of: String,
   name_attribute: true
@@ -42,8 +42,8 @@ def after_created
 end
 
 action :apply do
-  converge_by "applying attributes for #{environment}" do
-    apply_hash(node.fetch("#{prefix}#{environment}", {}))
+  converge_by "applying attributes for #{namespace}" do
+    apply_hash(node.fetch("#{prefix}#{namespace}", {}))
   end
 end
 
