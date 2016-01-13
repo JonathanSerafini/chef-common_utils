@@ -25,9 +25,12 @@ module Common
     #   }
     # @since 0.1.0
     def namespaced(*namespaces)
-      namespaces  = node[:common][:namespaces][:active] if namespaces.empty?
+      # TODO -- DataBagItem does not have access to node
+      # /sadpanda
+      #namespaces  = node[:common][:namespaces][:active] if namespaces.empty?
       namespaces  = namespaces.map(&:to_s)
-      prefix      = node[:common][:namespaces][:prefix]
+      #prefix      = node[:common][:namespaces][:prefix]
+      prefix      = "_"
 
       data = @raw_data.reject{|key,_| key[0] == prefix}
       namespaces.each do |namespace|
