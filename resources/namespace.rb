@@ -39,6 +39,7 @@ property :compile_time,
 
 def after_created
   self.run_action(:apply) if compile_time
+  self.action :nothing
 end
 
 action :apply do

@@ -44,6 +44,7 @@ property :ignore_missing,
 
 def after_created
   self.run_action(:apply) if compile_time
+  self.action :nothing
 end
 
 action :apply do
@@ -53,6 +54,10 @@ action :apply do
   end
 end
 
+# Include Chef DSL providing search methods
+#
+include Chef::DSL::DataQuery
+
 # Fetch a databag item to include into the node attributes
 #
 # @param data_bag [String]
@@ -60,12 +65,12 @@ end
 # @return [Hash]
 # @since 0.1.0
 def fetch_item(data_bag, item)
-  data = Chef::DSL::DataQuery.data_bag_item(data_bag, item)
+  data = data_bag_item(data_bag, item)
   data = data.to_hash.reject do |key|
     %w(chef_type data_bag id).include?(key)
   end
   data
-rescue StandardError => e
+rescue Net::HTTPServerException => e
   Chef::Log.warn "#{self} could not find the environment named #{name}"
   if ignore_missing then {}
   else raise
