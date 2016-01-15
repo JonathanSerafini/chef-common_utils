@@ -43,10 +43,18 @@ def after_created
 end
 
 action :apply do
-  converge_by "applying attributes for #{namespace}" do
-    apply_hash(node.fetch("#{prefix}#{namespace}", {}))
+  namespace_name = namespace
+  namespace_name = fetch_attribute(namespace[1..-1]) if namespace[0] == '@'
+  raise ArgumentError.new "Node attribute not found" if namespace_name.nil?
+
+  converge_by "applying attributes for #{namespace_name}" do
+    apply_hash(node.fetch("#{prefix}#{namespace_name}", {}))
   end
 end
+
+# Include node attribute helper methods
+#
+include Common::FetchAttribute
 
 # Apply an attribute hash to the node attributes
 # 
@@ -58,7 +66,7 @@ def apply_hash(hash)
     node.attributes.env_default = hash
   when "role"
     node.attributes.role_default = hash
-  else raise AttributeError.new "Invalid scope defined: #{scope}"
+  else raise ArgumentError.new "Invalid scope defined: #{scope}"
   end
 end
 

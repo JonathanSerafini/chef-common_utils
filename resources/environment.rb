@@ -48,8 +48,12 @@ def after_created
 end
 
 action :apply do
-  converge_by "applying attributes for #{environment}" do
-    item_data = fetch_item(data_bag, environment)
+  environment_name = environment
+  environment_name = fetch_attribute(environment[1..-1]) if environment[0] == '@'
+  raise ArgumentError.new "Node attribute not found" if environment_name.nil?
+
+  converge_by "applying attributes for #{environment_name}" do
+    item_data = fetch_item(data_bag, environment_name)
     apply_hash(item_data)
   end
 end
@@ -57,6 +61,10 @@ end
 # Include Chef DSL providing search methods
 #
 include Chef::DSL::DataQuery
+
+# Include node attribute helper methods
+#
+include Common::FetchAttribute
 
 # Fetch a databag item to include into the node attributes
 #
@@ -89,7 +97,7 @@ def apply_hash(hash)
   when "role"
     node.attributes.role_default = hash.fetch("default_attributes", {})
     node.attributes.role_override = hash.fetch("override_attributes", {})
-  else raise AttributeError.new "Invalid scope defined: #{scope}"
+  else raise ArgumentError.new "Invalid scope defined: #{scope}"
   end
 end
 
