@@ -4,9 +4,9 @@ default[:common][:environments][:data_bag] = "environments"
 
 # Name of the data_bag items to attempt to load
 default[:common][:environments][:active] = [
-  node.environment,
-  node.policy_group,
-  node.policy_name
+  '@environment',
+  '@policy_group',
+  '@policy_name'
 ].compact.uniq
 
 # Whether to apply environments at compile-time or converge-time

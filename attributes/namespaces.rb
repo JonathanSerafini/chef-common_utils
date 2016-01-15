@@ -1,9 +1,9 @@
 
 # Name of the data_bag items to attempt to load
 default[:common][:namespaces][:active] = [
-  node.environment,
-  node.policy_group,
-  node.policy_name
+  '@environment',
+  '@policy_group',
+  '@policy_name'
 ].compact.uniq
 
 # The optional namespace prefix
