@@ -18,13 +18,13 @@ module Common
     #     "a": 0,
     #     "b": 0
     #   }
-    #   > data.namespaced("namespace")
+    #   > data.common_namespaced("namespace")
     #   {
     #     "a": 0,
     #     "b": 1
     #   }
     # @since 0.1.0
-    def namespaced(*namespaces)
+    def common_namespaced(*namespaces)
       # TODO -- DataBagItem does not have access to node
       # /sadpanda
       #namespaces  = node[:common][:namespaces][:active] if namespaces.empty?

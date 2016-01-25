@@ -18,14 +18,13 @@ module Common
     # @since 0.1.0
     def load_properties(hash)
       hash = Mash.new(hash.to_hash) if hash.respond_to?(:to_hash)
-
       hash.each do |key, value|
         if respond_to?(key.to_sym)
           send(key.to_sym, value)
         else
           Chef::Log.warn "#{self} received unknown property #{key}"
         end
-      end
+      end unless hash.nil?
     end
   end
 end
