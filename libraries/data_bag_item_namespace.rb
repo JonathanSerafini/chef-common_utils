@@ -25,12 +25,11 @@ module Common
     #   }
     # @since 0.1.0
     def common_namespaced(*namespaces)
-      # TODO -- DataBagItem does not have access to node
-      # /sadpanda
-      #namespaces  = node[:common][:namespaces][:active] if namespaces.empty?
+      if Array(namespaces).empty?
+        namespaces = Chef.run_context.node[:common][:namespaces][:active]
+      end
       namespaces  = namespaces.map(&:to_s)
-      #prefix      = node[:common][:namespaces][:prefix]
-      prefix      = "_"
+      prefix      = Chef.run_context.node[:common][:namespaces][:prefix]
 
       data = @raw_data.reject{|key,_| key[0] == prefix}
       namespaces.each do |namespace|
