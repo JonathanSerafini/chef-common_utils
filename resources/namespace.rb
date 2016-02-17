@@ -22,6 +22,7 @@ resource_name :common_namespace
 # The namespace name to lookup and apply
 property :namespace,
   kind_of: String,
+  coerce: proc { |value| Common::EvaluatedString.new(value) },
   name_attribute: true
 
 # The destination name to lookup and apply
@@ -48,33 +49,19 @@ def after_created
 end
 
 action :apply do
-  namespace_name = namespace
-  namespace_name = fetch_attribute(namespace)
-  raise ArgumentError.new "Node attribute not found" if namespace_name.nil?
+  raise ArgumentError.new "Node attribute not found" if namespace.nil?
 
-  converge_by "applying attributes for #{namespace_name}" do
-    apply_hash(fetch_attribute("#{prefix}#{namespace_name}", {}))
+  converge_by "applying attributes for #{namespace}" do
+    apply_hash(fetch_attribute("#{prefix}#{namespace}", {}))
   end
 end
 
-# Include node attribute helper methods
-#
-include Common::FetchAttribute
-
-# Lookup the namespace attribute value
+# Lookup an attribute by array or comma delimited list
 #
 # @since 0.1.2
-# @returns [Node::Attribute] the node attribute containing the namespace
-def fetch_namespace
-  fetch_attribute("#{prefix}#{namespace_name}")
-end
-
-# Lookup the destination attribute value
-#
-# @since 0.1.2
-# @returns [Node::Attribute] the node attribute containing the destination
-def fetch_destination
-  destination.nil? ? node : fetch_attribute(destination)
+# @returns [Node::Attribute] the node attribute
+def fetch_attribute(path, default = nil)
+  Common::AttributeReference.new(path) || default
 end
 
 # Apply an attribute hash to the node attributes
@@ -82,7 +69,8 @@ end
 # @param hash [Hash] hash containing attributes
 # @since 0.1.0
 def apply_hash(hash)
-  destination = fetch_destination
+  destination = destination.nil? ? node : fetch_attribute(destination, nil)
+  raise ArgumentError.new "Node attribute not found" if destination.nil?
 
   case precedence
   when "environment"

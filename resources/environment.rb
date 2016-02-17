@@ -19,6 +19,7 @@ resource_name :common_environment
 # The environment name to search for and apply
 property :environment,
   kind_of: String,
+  coerce: proc { |value| Common::EvaluatedString.new(value) },
   name_attribute: true
 
 # The level of precendence to apply attributes at
@@ -48,12 +49,10 @@ def after_created
 end
 
 action :apply do
-  environment_name = environment
-  environment_name = fetch_attribute(environment[1..-1]) if environment[0] == '@'
-  raise ArgumentError.new "Node attribute not found" if environment_name.nil?
+  raise ArgumentError.new "Node attribute not found" if environment.nil?
 
-  converge_by "applying attributes for #{environment_name}" do
-    item_data = fetch_item(data_bag, environment_name)
+  converge_by "applying attributes for #{environment}" do
+    item_data = fetch_item(data_bag, environment)
     apply_hash(item_data)
   end
 end
@@ -61,10 +60,6 @@ end
 # Include Chef DSL providing search methods
 #
 include Chef::DSL::DataQuery
-
-# Include node attribute helper methods
-#
-include Common::FetchAttribute
 
 # Fetch a databag item to include into the node attributes
 #
