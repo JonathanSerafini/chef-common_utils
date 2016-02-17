@@ -6,13 +6,13 @@ Chef.event_handler do
 
     # Iterate through the blacklist and delete attributes
     node[:common][:blacklist].each do |key, value|
-      key = Common::EvaluatedString.new(key)
-      element
+      key_path = Common::EvaluatedString.new(key)
+      key_name = key_path.split('.').last
 
-      elements = String(key).split('.')
-      elements.pop
+      parent = Common::ParentAttributeReference.new(key)
+      next unless parent
 
-      node.rm(*elements)
+      parent[key_name] = Common::SuppressedString.new(parent[key_name])
     end
   end
 end
