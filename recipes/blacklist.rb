@@ -5,7 +5,7 @@ Chef.event_handler do
     node = Chef.run_context.node
 
     # Iterate through the blacklist and delete attributes
-    node[:common][:blacklist].each do |key, value|
+    node[:common_utils][:blacklist].each do |key, value|
       key_path = Common::EvaluatedString.new(key)
       key_name = key_path.split('.').last
 

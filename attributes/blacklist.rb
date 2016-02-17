@@ -12,5 +12,5 @@
 # }
 # ```
 #
-default[:common][:blacklist] = {}
+default[:common_utils][:blacklist] = {}
 
